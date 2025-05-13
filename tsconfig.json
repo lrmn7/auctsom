@@ -1,0 +1,55 @@
+{
+  "compilerOptions": {
+    "target": "es2020", // Updated to es2020 for better compatibility
+    "lib": [
+      "DOM",
+      "DOM.Iterable",
+      "ESNext"
+    ], // Capitalized for consistency
+    "allowJs": true, // Allows JavaScript files in TypeScript projects
+    "skipLibCheck": true, // Skips type checking of declaration files for faster builds
+    "strict": true, // Enables all strict type-checking options
+    "forceConsistentCasingInFileNames": true, // Enforces consistent file name casing
+    "noEmit": true, // Prevents emitting compiled JS files
+    "esModuleInterop": true, // Ensures compatibility with CommonJS and ES modules
+    "module": "commonjs", // Updated to commonjs for better compatibility
+    "moduleResolution": "node", // Uses Node.js-style module resolution
+    "resolveJsonModule": true, // Allows importing JSON files as modules
+    "isolatedModules": true, // Ensures each file is treated as an isolated module
+    "jsx": "preserve", // Preserves JSX syntax for later compilation
+    "incremental": true, // Enables incremental compilation for faster rebuilds
+    "baseUrl": ".", // Allows resolving modules relative to the project root
+    "paths": { // Example: Aliases for commonly used paths
+      "@components/*": [
+        "components/*"
+      ],
+      "@utils/*": [
+        "utils/*"
+      ],
+      "@styles/*": [
+        "styles/*"
+      ],
+      "@contracts/*": [
+        "contracts/*"
+      ]
+    },
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ]
+  },
+  "include": [
+    "**/*.ts", // Required for Next.js projects
+    "**/*.tsx", // Include all TypeScript files
+    "hardhat.config.ts" // Include all TypeScript files with JSX/TSX
+    ,
+    "next-env.d.ts",
+    ".next/types/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules", // Exclude `node_modules` to improve performance
+    ".next", // Exclude the Next.js build output folder
+    "dist" // Exclude build artifacts
+  ]
+}
