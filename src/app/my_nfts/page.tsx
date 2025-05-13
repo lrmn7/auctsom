@@ -184,7 +184,7 @@ function MyNFTsContent() {
                   </label>
                   <input
                     type="number"
-                    step="0.01"
+                    step="0.1"
                     value={auctionForm.startingPrice}
                     onChange={(e) => setAuctionForm({ ...auctionForm, startingPrice: e.target.value })}
                     className="w-full px-4 py-2 rounded-lg bg-gray-700 text-white"
