@@ -202,10 +202,10 @@ function MyEndedAuctionsContent() {
                   
                   <div className="space-y-1">
                     <p className="text-purple-400">
-                      Starting Price: {ethers.formatEther(auction.startingPrice)} ETH
+                      Starting Price: {ethers.formatEther(auction.startingPrice)} STT
                     </p>
                     <p className="text-purple-400">
-                      Final Bid: {ethers.formatEther(auction.highestBid)} ETH
+                      Final Bid: {ethers.formatEther(auction.highestBid)} STT
                     </p>
                     {auction.highestBidder !== ethers.ZeroAddress && (
                       <p className="text-gray-400">

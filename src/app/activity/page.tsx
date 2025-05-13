@@ -108,7 +108,7 @@ function ActivityContent() {
                     </p>
                     {tx.value > 0n && (
                       <p className="text-gray-400 text-sm">
-                        Value: {ethers.formatEther(tx.value)} ETH
+                        Value: {ethers.formatEther(tx.value)} STT
                       </p>
                     )}
                     <div className="mt-2 space-y-1">

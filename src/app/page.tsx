@@ -69,7 +69,7 @@ const NFTCard = ({ compact = false }) => {
         <h3 className="text-white font-semibold mb-1">Crypto Art #1234</h3>
         <div className="flex justify-between items-center">
           <span className="text-purple-400">Current Bid</span>
-          <span className="text-white font-bold">2.5 ETH</span>
+          <span className="text-white font-bold">2.5 STT</span>
         </div>
         {!compact && (
           <div className="mt-3 flex justify-between items-center text-sm">

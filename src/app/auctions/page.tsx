@@ -7,7 +7,7 @@ import Header from '../../components/common/header/header';
 import { createNFTContract } from '../../utils/nft_contract';
 import { createNFTAuctionContract } from '../../utils/nft_auction_contract';
 import { Snackbar, Alert } from '@mui/material';
-
+import toast from 'react-hot-toast';
 const NFT_CONTRACT_ADDRESS = process.env.NEXT_PUBLIC_NFT_CONTRACT_ADDRESS || '';
 const AUCTION_CONTRACT_ADDRESS = process.env.NEXT_PUBLIC_AUCTION_CONTRACT_ADDRESS || '';
 
@@ -159,7 +159,7 @@ function AuctionsContent() {
   const placeBid = async (auction: AuctionNFT) => {
     try {
       if (!bidAmount) {
-        alert('Please enter a bid amount');
+        toast.error('Please enter a bid amount');
         return;
       }
 
@@ -171,7 +171,7 @@ function AuctionsContent() {
         auction.highestBid + (auction.highestBid * BigInt(500)) / BigInt(10000);
 
       if (ethers.parseEther(bidAmount) < minBidAmount) {
-        alert('Bid amount too low');
+        toast.error('Bid amount too low');
         return;
       }
       const feeData = await provider!.getFeeData();
@@ -198,7 +198,7 @@ function AuctionsContent() {
 
         setSnackbar({
           open: true,
-          message: `Bid placed successfully! Gas used: ${gasUsed.toString()} units (${gasCostInEth} ETH)`,
+          message: `Bid placed successfully! Gas used: ${gasUsed.toString()} units (${gasCostInEth} STT)`,
           severity: 'success'
         });
       }
@@ -208,11 +208,15 @@ function AuctionsContent() {
       await loadAuctions();
     } catch (error) {
       console.error('Error placing bid:', error);
-      setSnackbar({
-        open: true,
-        message: `Failed to place bid: ${error instanceof Error ? error.message : 'Unknown error'}`,
-        severity: 'error'
-      });
+if ((error as any)?.code === 4001) {
+  toast.error('Transaction cancelled');
+} else {
+  setSnackbar({
+    open: true,
+    message: `Failed to place bid: ${error instanceof Error ? error.message : 'Unknown error'}`,
+    severity: 'error'
+  });
+}
     }
   };
 
@@ -283,14 +287,14 @@ function AuctionsContent() {
                   )}
                   <div className="absolute bottom-4 right-4 bg-black/70 px-3 py-1 rounded-lg">
                     <p className="text-purple-400 text-sm">
-                      Min Bid: {ethers.formatEther(auction.startingPrice)} ETH
+                      Min Bid: {ethers.formatEther(auction.startingPrice)} STT
                     </p>
                   </div>
                 </div>
                 <h3 className="text-white text-xl font-bold">{auction.name}</h3>
                 <p className="text-gray-400 mt-2">{auction.description}</p>
                 <div className="mt-4 space-y-2">
-                  <p className="text-purple-400">Current Bid: {ethers.formatEther(auction.highestBid)} ETH</p>
+                  <p className="text-purple-400">Current Bid: {ethers.formatEther(auction.highestBid)} STT</p>
                   <p className="text-purple-400">Time Left: {getTimeLeft(auction)}</p>
                   <p className="text-gray-400">Seller: {auction.seller.slice(0, 6)}...{auction.seller.slice(-4)}</p>
                   {auction.highestBidder !== ethers.ZeroAddress && (
@@ -299,7 +303,7 @@ function AuctionsContent() {
                         Highest Bidder: {auction.highestBidder.slice(0, 6)}...{auction.highestBidder.slice(-4)}
                       </p>
                       <p className="text-purple-400 font-medium">
-                        {ethers.formatEther(auction.highestBid)} ETH
+                        {ethers.formatEther(auction.highestBid)} STT
                       </p>
                     </div>
                   )}
