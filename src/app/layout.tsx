@@ -87,7 +87,22 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} ${timesNewRoman.variable} antialiased`}
       >
         <div className="min-h-screen flex flex-col">
+          {/* ALERT BAR */}
+          <div className="bg-yellow-500 text-black text-center text-sm md:text-base py-1 px-4 font-medium">
+            ⚠️ Built on Somnia Network (Testnet). No real assets involved. Check{" "}
+            <a
+              href="https://github.com/lrmn7/auctsom"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline font-semibold hover:text-blue-700 ml-1"
+            >
+              GitHub Repository
+            </a>{" "}
+            for security details.
+          </div>
+
           <main className="flex-grow">{children}</main>
+
           <Toaster
             position="top-center"
             reverseOrder={false}
@@ -111,9 +126,11 @@ export default function RootLayout({
               },
             }}
           />
+
           {/* <Footer /> */}
         </div>
       </body>
     </html>
   );
 }
+

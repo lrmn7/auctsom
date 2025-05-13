@@ -66,21 +66,21 @@ const Header = ({ onMenuClick }: HeaderProps) => {
           </nav>
 
           <div className="flex items-center space-x-4">
-              <a
-    href="https://x.com/Somnia_Network"
-    target="_blank"
-    rel="noopener noreferrer"
-className="hidden md:flex items-center justify-center px-4 py-2 rounded-lg border-2 border-gray-300 transition duration-300 transform hover:scale-105 focus:outline-none shadow-lg bg-transparent hover:bg-transparent"
-  >
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      fill="white"
-      viewBox="0 0 512 512"
-      className="w-5 h-5"
-    >
-      <path d="M216.1 211.3L9.4 0h117.2l142.4 149.6L390.1 0h112.4L327.7 186.6 512 407.3H395.1L266.3 246.4 98.3 512H0L216.1 211.3z" />
-    </svg>
-  </a>
+            <a
+              href="https://x.com/Somnia_Network"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hidden md:flex items-center justify-center px-4 py-2 rounded-lg border-2 border-gray-300 transition duration-300 transform hover:scale-105 focus:outline-none shadow-lg bg-transparent hover:bg-transparent"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="white"
+                viewBox="0 0 512 512"
+                className="w-5 h-5"
+              >
+                <path d="M216.1 211.3L9.4 0h117.2l142.4 149.6L390.1 0h112.4L327.7 186.6 512 407.3H395.1L266.3 246.4 98.3 512H0L216.1 211.3z" />
+              </svg>
+            </a>
             <button
               onClick={handleWalletButtonClick}
               disabled={isConnecting}
@@ -97,9 +97,9 @@ className="hidden md:flex items-center justify-center px-4 py-2 rounded-lg borde
                 ? "Connecting..."
                 : "Connect Wallet"}
             </button>
-              {/* x/twitter button */}
+            {/* x/twitter button */}
 
-  {/* menu button for mobile */}
+            {/* menu button for mobile */}
             <button
               onClick={toggleSideDrawer}
               className="md:hidden p-2 hover:bg-purple-800/50 rounded-full transition duration-300"
