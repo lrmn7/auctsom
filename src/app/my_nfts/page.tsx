@@ -35,7 +35,7 @@ function MyNFTsContent() {
   const [selectedNFT, setSelectedNFT] = useState<NFT | null>(null);
   const [auctionForm, setAuctionForm] = useState({
     startingPrice: '',
-    duration: '3600' // Default duration remains 1 hour
+    duration: '3600'
   });
 
   useEffect(() => {
@@ -180,7 +180,7 @@ function MyNFTsContent() {
               }} className="space-y-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-400 mb-1">
-                    Starting Price (STT)
+                    Starting Price (0.1 STT)
                   </label>
                   <input
                     type="number"
