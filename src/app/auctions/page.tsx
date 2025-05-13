@@ -206,19 +206,19 @@ function AuctionsContent() {
       setSelectedAuction(null);
       setBidAmount('');
       await loadAuctions();
-    } catch (error) {
-      console.error('Error placing bid:', error);
-if ((error as any)?.code === 4001) {
-  toast.error('Transaction cancelled');
-} else {
-  setSnackbar({
-    open: true,
-    message: `Failed to place bid: ${error instanceof Error ? error.message : 'Unknown error'}`,
-    severity: 'error'
-  });
+
+  // Your transaction code here
+} catch (error) {
+  console.error('Error placing bid:', error);
+  
+  // Check specifically for user rejection (code 4001)
+  if ((error as any)?.code === 4001) {
+    toast.error('Transaction cancelled');
+  } else {
+    toast.error(`Failed to place bid: ${error instanceof Error ? error.message : 'Unknown error'}`);
+  }
 }
-    }
-  };
+  }
 
   const handleCancelAuction = async (tokenId: string) => {
     if (!provider || !isAuthenticated) return;
