@@ -80,7 +80,7 @@ const Homepage = () => {
             and let’s shape the future together.
           </p>
           <button
-      onClick={() => window.open("https://discord.gg/somnia", "_blank")}
+            onClick={() => window.open("https://discord.gg/somnia", "_blank")}
             className="px-8 py-3 bg-white text-gray-600 rounded-lg hover:bg-gray-100 transition duration-300 font-bold"
           >
             Discord Server
@@ -106,18 +106,6 @@ const FeatureCard: React.FC<FeatureCardProps> = ({
     <div className="mb-4">{icon}</div>
     <h3 className="text-xl font-bold mb-2">{title}</h3>
     <p className="text-gray-200">{description}</p>
-  </div>
-);
-
-interface StatCardProps {
-  number: string;
-  label: string;
-}
-
-const StatCard: React.FC<StatCardProps> = ({ number, label }) => (
-  <div className="p-4">
-    <div className="text-3xl font-bold mb-2 text-purple-400">{number}</div>
-    <div className="text-purple-200">{label}</div>
   </div>
 );
 

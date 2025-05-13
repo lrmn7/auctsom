@@ -1,15 +1,19 @@
-'use client';
+"use client";
 
-import React, { useState, useEffect } from 'react';
-import { ethers } from 'ethers';
-import { AuthProvider, useAuth } from '../../context/authcontext';
-import Header from '../../components/common/header/header';
-import { createNFTContract } from '../../utils/nft_contract';
-import { createNFTAuctionContract, filterExpiredAuctions } from '../../utils/nft_auction_contract';
-import { generateCustomPlaceholderURL } from 'react-placeholder-image';
+import React, { useState, useEffect } from "react";
+import { ethers } from "ethers";
+import { AuthProvider, useAuth } from "../../context/authcontext";
+import Header from "../../components/common/header/header";
+import { createNFTContract } from "../../utils/nft_contract";
+import {
+  createNFTAuctionContract,
+  filterExpiredAuctions,
+} from "../../utils/nft_auction_contract";
+import { generateCustomPlaceholderURL } from "react-placeholder-image";
 
-const NFT_CONTRACT_ADDRESS = process.env.NEXT_PUBLIC_NFT_CONTRACT_ADDRESS || '';
-const AUCTION_CONTRACT_ADDRESS = process.env.NEXT_PUBLIC_AUCTION_CONTRACT_ADDRESS || '';
+const NFT_CONTRACT_ADDRESS = process.env.NEXT_PUBLIC_NFT_CONTRACT_ADDRESS || "";
+const AUCTION_CONTRACT_ADDRESS =
+  process.env.NEXT_PUBLIC_AUCTION_CONTRACT_ADDRESS || "";
 
 type EndedAuctionNFT = {
   tokenId: string;
@@ -58,12 +62,15 @@ function MyEndedAuctionsContent() {
       setError(null);
       const signer = await provider!.getSigner();
       const userAddress = await signer.getAddress();
-      const auctionContract = createNFTAuctionContract(AUCTION_CONTRACT_ADDRESS, signer);
+      const auctionContract = createNFTAuctionContract(
+        AUCTION_CONTRACT_ADDRESS,
+        signer
+      );
       const allAuctions = await auctionContract.getUserAuctions(userAddress);
       const expiredAuctions = filterExpiredAuctions(allAuctions, userAddress);
-      
-      console.log('All auctions:', allAuctions);
-      console.log('Filtered expired auctions:', expiredAuctions);
+
+      console.log("All auctions:", allAuctions);
+      console.log("Filtered expired auctions:", expiredAuctions);
 
       if (!expiredAuctions || expiredAuctions.length === 0) {
         setAuctions([]);
@@ -77,12 +84,12 @@ function MyEndedAuctionsContent() {
         try {
           let metadata = {
             name: `NFT #${auction.tokenId}`,
-            description: 'No description available',
+            description: "No description available",
             image: generateCustomPlaceholderURL(200, 200, {
-              backgroundColor: '#123456',
-              textColor: '#ffffff',
+              backgroundColor: "#123456",
+              textColor: "#ffffff",
               text: auction.tokenId.toString(),
-            })
+            }),
           };
 
           try {
@@ -92,14 +99,18 @@ function MyEndedAuctionsContent() {
               const fetchedMetadata = await response.json();
               metadata = {
                 name: fetchedMetadata.name || metadata.name,
-                description: fetchedMetadata.description || metadata.description,
-                image: fetchedMetadata.image || metadata.image
+                description:
+                  fetchedMetadata.description || metadata.description,
+                image: fetchedMetadata.image || metadata.image,
               };
             }
           } catch (error) {
-            console.warn(`Failed to fetch metadata for token ${auction.tokenId}:`, error);
+            console.warn(
+              `Failed to fetch metadata for token ${auction.tokenId}:`,
+              error
+            );
           }
-          
+
           return {
             tokenId: auction.tokenId.toString(),
             name: metadata.name,
@@ -110,7 +121,7 @@ function MyEndedAuctionsContent() {
             highestBid: auction.highestBid,
             highestBidder: auction.highestBidder,
             endTime: auction.startTime + auction.duration,
-            active: auction.active
+            active: auction.active,
           };
         } catch (error) {
           console.error(`Error processing auction ${auction.tokenId}:`, error);
@@ -118,13 +129,14 @@ function MyEndedAuctionsContent() {
         }
       });
 
-      const loadedAuctions = (await Promise.all(auctionPromises))
-        .filter(Boolean) as EndedAuctionNFT[];
-      
+      const loadedAuctions = (await Promise.all(auctionPromises)).filter(
+        Boolean
+      ) as EndedAuctionNFT[];
+
       setAuctions(loadedAuctions);
     } catch (error) {
-      console.error('Error loading expired auctions:', error);
-      setError('Failed to load expired auctions. Please try again.');
+      console.error("Error loading expired auctions:", error);
+      setError("Failed to load expired auctions. Please try again.");
     } finally {
       setIsLoading(false);
     }
@@ -135,14 +147,19 @@ function MyEndedAuctionsContent() {
       setProcessingAction(tokenId);
       setError(null);
       const signer = await provider!.getSigner();
-      const auctionContract = createNFTAuctionContract(AUCTION_CONTRACT_ADDRESS, signer);
-      
+      const auctionContract = createNFTAuctionContract(
+        AUCTION_CONTRACT_ADDRESS,
+        signer
+      );
+
       const tx = await auctionContract.finalizeExpiredAuction(tokenId);
       await tx.wait();
       await loadExpiredAuctions();
     } catch (error: any) {
-      console.error('Error finalizing auction:', error);
-      setError(error.message || 'Failed to finalize auction. Please try again.');
+      console.error("Error finalizing auction:", error);
+      setError(
+        error.message || "Failed to finalize auction. Please try again."
+      );
     } finally {
       setProcessingAction(null);
     }
@@ -153,7 +170,9 @@ function MyEndedAuctionsContent() {
       <div className="min-h-screen bg-[#212121]/80 backdrop-blur-md">
         <Header onMenuClick={() => {}} />
         <main className="container mx-auto px-4 py-8">
-          <p className="text-white text-center">Please connect your wallet to view your expired auctions.</p>
+          <p className="text-white text-center">
+            Please connect your wallet to view your expired auctions.
+          </p>
         </main>
       </div>
     );
@@ -163,7 +182,9 @@ function MyEndedAuctionsContent() {
     <div className="min-h-screen bg-[#212121]/80 backdrop-blur-md">
       <Header onMenuClick={() => {}} />
       <main className="container mx-auto px-4 py-8">
-        <h1 className="text-4xl font-bold text-white mb-8">My Expired Auctions</h1>
+        <h1 className="text-4xl font-bold text-white mb-8">
+          My Expired Auctions
+        </h1>
 
         {error && (
           <div className="bg-red-500/20 border border-red-500 text-red-100 p-4 rounded-lg mb-6">
@@ -172,44 +193,55 @@ function MyEndedAuctionsContent() {
         )}
 
         {isLoading ? (
-          <p className="text-white text-center">Loading your expired auctions...</p>
+          <p className="text-white text-center">
+            Loading your expired auctions...
+          </p>
         ) : auctions.length === 0 ? (
-          <p className="text-white text-center">You don't have any expired auctions to finalize.</p>
+          <p className="text-white text-center">
+            You don't have any expired auctions to finalize.
+          </p>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {auctions.map((auction) => (
-              <div key={auction.tokenId} className="bg-gray-800/30 rounded-xl p-4">
+              <div
+                key={auction.tokenId}
+                className="bg-gray-800/30 rounded-xl p-4"
+              >
                 <div className="relative">
                   {auction.image && (
-                    <img 
-                      src={auction.image} 
-                      alt={auction.name} 
+                    <img
+                      src={auction.image}
+                      alt={auction.name}
                       className="w-full h-48 object-cover rounded-lg mb-4"
                       onError={(e) => {
                         const target = e.target as HTMLImageElement;
                         target.onerror = null; // Prevent infinite loop
-                        target.src = '/placeholder-nft.jpg';
+                        target.src = "/placeholder-nft.jpg";
                       }}
                     />
                   )}
                 </div>
-                
+
                 <div className="space-y-2">
                   <h3 className="text-white text-xl font-bold flex justify-between items-center">
                     <span>{auction.name}</span>
-                    <span className="text-sm text-gray-400">{formatTokenId(auction.tokenId)}</span>
+                    <span className="text-sm text-gray-400">
+                      {formatTokenId(auction.tokenId)}
+                    </span>
                   </h3>
-                  
+
                   <div className="space-y-1">
                     <p className="text-purple-400">
-                      Starting Price: {ethers.formatEther(auction.startingPrice)} STT
+                      Starting Price:{" "}
+                      {ethers.formatEther(auction.startingPrice)} STT
                     </p>
                     <p className="text-purple-400">
                       Final Bid: {ethers.formatEther(auction.highestBid)} STT
                     </p>
                     {auction.highestBidder !== ethers.ZeroAddress && (
                       <p className="text-gray-400">
-                        Highest Bidder: {auction.highestBidder.slice(0, 6)}...{auction.highestBidder.slice(-4)}
+                        Highest Bidder: {auction.highestBidder.slice(0, 6)}...
+                        {auction.highestBidder.slice(-4)}
                       </p>
                     )}
                   </div>
@@ -220,14 +252,16 @@ function MyEndedAuctionsContent() {
                     <span className="text-gray-400">Status:</span>
                     <span className="text-yellow-400">Expired</span>
                   </div>
-                  
+
                   {auction.highestBid === 0n ? (
                     <button
                       onClick={() => handleFinalizeAuction(auction.tokenId)}
                       disabled={processingAction === auction.tokenId}
                       className="w-full px-4 py-2 bg-purple-500 text-white font-bold rounded-lg hover:bg-purple-600 disabled:bg-purple-400 transition-colors"
                     >
-                      {processingAction === auction.tokenId ? 'Processing...' : 'Reclaim NFT'}
+                      {processingAction === auction.tokenId
+                        ? "Processing..."
+                        : "Reclaim NFT"}
                     </button>
                   ) : (
                     <button
@@ -235,7 +269,9 @@ function MyEndedAuctionsContent() {
                       disabled={processingAction === auction.tokenId}
                       className="w-full px-4 py-2 bg-green-500 text-white font-bold rounded-lg hover:bg-green-600 disabled:bg-green-400 transition-colors"
                     >
-                      {processingAction === auction.tokenId ? 'Processing...' : 'Finalize Auction'}
+                      {processingAction === auction.tokenId
+                        ? "Processing..."
+                        : "Finalize Auction"}
                     </button>
                   )}
                 </div>

@@ -2,7 +2,7 @@ import { ThirdwebStorage } from "@thirdweb-dev/storage";
 
 const storage = new ThirdwebStorage({
   clientId: process.env.NEXT_PUBLIC_THIRDWEB_CLIENT_ID,
-  secretKey: process.env.NEXT_PUBLIC_THIRDWEB_SECRET_KEY // Only use in server-side code
+  secretKey: process.env.NEXT_PUBLIC_THIRDWEB_SECRET_KEY,
 });
 
 export async function uploadToIPFS(file: File): Promise<string> {
@@ -14,9 +14,9 @@ export async function uploadToIPFS(file: File): Promise<string> {
     console.log("Uploading file to IPFS...");
     const uri = await storage.upload(file, {
       uploadWithGatewayUrl: true,
-      uploadWithoutDirectory: true
+      uploadWithoutDirectory: true,
     });
-    
+
     console.log("File uploaded successfully:", uri);
     return uri;
   } catch (error) {

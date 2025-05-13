@@ -1,5 +1,5 @@
-import { ethers } from 'ethers';
-import UserRecordsABI from '../../artifacts/contracts/UserRecords.sol/UserRecords.json';
+import { ethers } from "ethers";
+import UserRecordsABI from "../../artifacts/contracts/UserRecords.sol/UserRecords.json";
 
 export enum TransactionType {
   MINT,
@@ -7,7 +7,7 @@ export enum TransactionType {
   CREATE_AUCTION,
   END_AUCTION,
   CANCEL_AUCTION,
-  TRANSFER
+  TRANSFER,
 }
 
 export interface Transaction {
@@ -31,15 +31,11 @@ export interface UserRecordsContract {
     success: boolean
   ): Promise<ethers.ContractTransactionResponse>;
 
-  getUserTransactions(
-    user: string
-  ): Promise<Transaction[]>;
+  getUserTransactions(user: string): Promise<Transaction[]>;
 
   getAllTransactions(): Promise<Transaction[]>;
 
-  getUserTransactionCount(
-    user: string
-  ): Promise<bigint>;
+  getUserTransactionCount(user: string): Promise<bigint>;
 
   getTransactionCountByType(
     user: string,
@@ -51,15 +47,27 @@ export function createUserRecordsContract(
   address: string,
   provider: ethers.Provider | ethers.Signer
 ): UserRecordsContract {
-  const contract = new ethers.Contract(
-    address,
-    UserRecordsABI.abi,
-    provider
-  );
+  const contract = new ethers.Contract(address, UserRecordsABI.abi, provider);
 
   return {
-    recordTransaction: (user, transactionType, tokenId, value, from, to, success) =>
-      contract.recordTransaction(user, transactionType, tokenId, value, from, to, success),
+    recordTransaction: (
+      user,
+      transactionType,
+      tokenId,
+      value,
+      from,
+      to,
+      success
+    ) =>
+      contract.recordTransaction(
+        user,
+        transactionType,
+        tokenId,
+        value,
+        from,
+        to,
+        success
+      ),
 
     getUserTransactions: async (user) => {
       const result = await contract.getUserTransactions(user);
@@ -71,10 +79,9 @@ export function createUserRecordsContract(
       return Array.isArray(result) ? result : [];
     },
 
-    getUserTransactionCount: (user) =>
-      contract.getUserTransactionCount(user),
+    getUserTransactionCount: (user) => contract.getUserTransactionCount(user),
 
     getTransactionCountByType: (user, txType) =>
-      contract.getTransactionCountByType(user, txType)
+      contract.getTransactionCountByType(user, txType),
   };
 }

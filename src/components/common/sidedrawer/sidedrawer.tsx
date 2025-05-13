@@ -1,5 +1,5 @@
-import React from 'react';
-import { X, Wallet } from 'lucide-react';
+import React from "react";
+import { X, Wallet } from "lucide-react";
 
 interface SideDrawerProps {
   isOpen: boolean;
@@ -10,32 +10,30 @@ interface SideDrawerProps {
   onWalletClick: () => void;
 }
 
-const SideDrawer: React.FC<SideDrawerProps> = ({ 
-  isOpen, 
-  onClose, 
-  isAuthenticated, 
-  walletAddress, 
-  isConnecting, 
-  onWalletClick 
+const SideDrawer: React.FC<SideDrawerProps> = ({
+  isOpen,
+  onClose,
+  isAuthenticated,
+  walletAddress,
+  isConnecting,
+  onWalletClick,
 }) => {
   return (
     <>
       {isOpen && (
-        <div 
+        <div
           className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40"
           onClick={onClose}
         />
       )}
 
-      <div 
+      <div
         className={`fixed top-0 left-0 h-full w-72 bg-[#212121]/80 backdrop-blur-md text-white z-50 transform
-          ${isOpen ? 'translate-x-0' : '-translate-x-full'}`}
+          ${isOpen ? "translate-x-0" : "-translate-x-full"}`}
       >
         <div className="flex items-center justify-between p-4 border-b border-gray-800">
-          <h2 className="text-xl font-bold text-white">
-            Hello World
-          </h2>
-          <button 
+          <h2 className="text-xl font-bold text-white">Hello World</h2>
+          <button
             onClick={onClose}
             className="p-2 hover:bg-gray-800 rounded-full transition-colors"
           >
@@ -49,12 +47,16 @@ const SideDrawer: React.FC<SideDrawerProps> = ({
             disabled={isConnecting}
             className={`w-full flex items-center justify-center gap-2 py-3 px-4 border-2 border-gray-300 rounded-lg transition duration-300 transform hover:scale-105 focus:outline-none shadow-lg ${
               isAuthenticated
-                ? 'bg-transparent hover:bg-transparent'
-                : 'bg-transparent hover:bg-transparent'
+                ? "bg-transparent hover:bg-transparent"
+                : "bg-transparent hover:bg-transparent"
             }`}
           >
             <Wallet className="w-5 h-5" />
-            {isAuthenticated ? `${walletAddress?.slice(0, 6)}...${walletAddress?.slice(-4)}` : isConnecting ? 'Connecting...' : 'Connect Wallet'}
+            {isAuthenticated
+              ? `${walletAddress?.slice(0, 6)}...${walletAddress?.slice(-4)}`
+              : isConnecting
+              ? "Connecting..."
+              : "Connect Wallet"}
           </button>
         </div>
 
@@ -78,7 +80,7 @@ interface NavItemProps {
 
 const NavItem: React.FC<NavItemProps> = ({ label, href }) => {
   return (
-    <a 
+    <a
       href={href}
       className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-gray-800 rounded-lg transition-colors"
     >

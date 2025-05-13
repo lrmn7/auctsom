@@ -1,6 +1,6 @@
-import { ethers } from 'ethers';
-import NFTAuctionRegistryABI from '../../artifacts/contracts/NFTAuctionRegistry.sol/NFTAuctionRegistry.json';
-import { Auction } from './nft_auction_contract';
+import { ethers } from "ethers";
+import NFTAuctionRegistryABI from "../../artifacts/contracts/NFTAuctionRegistry.sol/NFTAuctionRegistry.json";
+import { Auction } from "./nft_auction_contract";
 
 export interface NFTAuctionRegistryContract {
   getAuction(tokenId: ethers.BigNumberish): Promise<Auction>;
@@ -19,11 +19,8 @@ export function createNFTAuctionRegistryContract(
   );
 
   return {
-    getAuction: (tokenId) => 
-      contract.getAuction(tokenId),
-    getUserAuctions: (user) => 
-      contract.getUserAuctions(user),
-    getAllActiveAuctions: () => 
-      contract.getAllActiveAuctions(),
+    getAuction: (tokenId) => contract.getAuction(tokenId),
+    getUserAuctions: (user) => contract.getUserAuctions(user),
+    getAllActiveAuctions: () => contract.getAllActiveAuctions(),
   };
 }

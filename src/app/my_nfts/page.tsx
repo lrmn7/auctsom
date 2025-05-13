@@ -1,17 +1,18 @@
-'use client';
+"use client";
 
-import React, { useState, useEffect } from 'react';
-import { ethers } from 'ethers';
-import { AuthProvider, useAuth } from '../../context/authcontext';
-import Header from '../../components/common/header/header';
-import { createNFTContract } from '../../utils/nft_contract';
-import { createNFTAuctionContract } from '../../utils/nft_auction_contract';
-import { createNFTRegistryContract } from '../../utils/nft_registry_contract';
-import toast from 'react-hot-toast';
+import React, { useState, useEffect } from "react";
+import { ethers } from "ethers";
+import { AuthProvider, useAuth } from "../../context/authcontext";
+import Header from "../../components/common/header/header";
+import { createNFTContract } from "../../utils/nft_contract";
+import { createNFTAuctionContract } from "../../utils/nft_auction_contract";
+import { createNFTRegistryContract } from "../../utils/nft_registry_contract";
+import toast from "react-hot-toast";
 
-const NFT_CONTRACT_ADDRESS = process.env.NEXT_PUBLIC_NFT_CONTRACT_ADDRESS || '';
-const AUCTION_CONTRACT_ADDRESS = process.env.NEXT_PUBLIC_AUCTION_CONTRACT_ADDRESS || '';
-const NFT_REGISTRY_ADDRESS = process.env.NEXT_PUBLIC_NFT_REGISTRY_ADDRESS || '';
+const NFT_CONTRACT_ADDRESS = process.env.NEXT_PUBLIC_NFT_CONTRACT_ADDRESS || "";
+const AUCTION_CONTRACT_ADDRESS =
+  process.env.NEXT_PUBLIC_AUCTION_CONTRACT_ADDRESS || "";
+const NFT_REGISTRY_ADDRESS = process.env.NEXT_PUBLIC_NFT_REGISTRY_ADDRESS || "";
 
 type NFT = {
   id: string;
@@ -34,8 +35,8 @@ function MyNFTsContent() {
   const [isLoading, setIsLoading] = useState(true);
   const [selectedNFT, setSelectedNFT] = useState<NFT | null>(null);
   const [auctionForm, setAuctionForm] = useState({
-    startingPrice: '',
-    duration: '3600'
+    startingPrice: "",
+    duration: "3600",
   });
 
   useEffect(() => {
@@ -49,13 +50,16 @@ function MyNFTsContent() {
       setIsLoading(true);
       const signer = await provider!.getSigner();
       const address = await signer.getAddress();
-      const registryContract = createNFTRegistryContract(NFT_REGISTRY_ADDRESS, signer);
+      const registryContract = createNFTRegistryContract(
+        NFT_REGISTRY_ADDRESS,
+        signer
+      );
       const nftContract = createNFTContract(NFT_CONTRACT_ADDRESS, signer);
-      
+
       console.log("Loading NFTs for address:", address);
       const tokenIds = await registryContract.getUserNFTs(address);
       console.log("NFT token IDs:", tokenIds);
-      
+
       if (!tokenIds || tokenIds.length === 0) {
         console.log("No NFTs found for user");
         setNfts([]);
@@ -67,20 +71,20 @@ function MyNFTsContent() {
           const uri = await nftContract.tokenURI(tokenId);
           console.log("Token URI for", tokenId.toString(), ":", uri);
           return fetch(uri)
-            .then(res => res.json())
-            .then(metadata => ({
+            .then((res) => res.json())
+            .then((metadata) => ({
               id: tokenId.toString(),
               name: metadata.name || `NFT #${tokenId}`,
-              description: metadata.description || 'No description available',
-              image: metadata.image
+              description: metadata.description || "No description available",
+              image: metadata.image,
             }))
-            .catch(error => {
-              console.error('Error fetching metadata:', error);
+            .catch((error) => {
+              console.error("Error fetching metadata:", error);
               return {
                 id: tokenId.toString(),
                 name: `NFT #${tokenId}`,
-                description: 'Metadata unavailable',
-                image: undefined
+                description: "Metadata unavailable",
+                image: undefined,
               };
             });
         } catch (error) {
@@ -89,12 +93,14 @@ function MyNFTsContent() {
         }
       });
 
-      const loadedNfts = (await Promise.all(nftPromises)).filter(nft => nft !== null);
+      const loadedNfts = (await Promise.all(nftPromises)).filter(
+        (nft) => nft !== null
+      );
       console.log("Loaded NFTs:", loadedNfts);
       setNfts(loadedNfts as NFT[]);
     } catch (error) {
-      console.error('Error loading NFTs:', error);
-      toast.error('Failed to load NFTs.');
+      console.error("Error loading NFTs:", error);
+      toast.error("Failed to load NFTs.");
     } finally {
       setIsLoading(false);
     }
@@ -104,29 +110,33 @@ function MyNFTsContent() {
     try {
       const signer = await provider!.getSigner();
       const nftContract = createNFTContract(NFT_CONTRACT_ADDRESS, signer);
-      const auctionContract = createNFTAuctionContract(AUCTION_CONTRACT_ADDRESS, signer);
+      const auctionContract = createNFTAuctionContract(
+        AUCTION_CONTRACT_ADDRESS,
+        signer
+      );
       await nftContract.approve(AUCTION_CONTRACT_ADDRESS, nft.id);
       const tx = await auctionContract.createAuction(
         nft.id,
         ethers.parseEther(auctionForm.startingPrice),
         auctionForm.duration,
-        { 
-          value: ethers.parseEther("0.1") 
+        {
+          value: ethers.parseEther("0.1"),
         }
       );
 
       await tx.wait();
-      toast.success('Auction created successfully!');
+      toast.success("Auction created successfully!");
       setSelectedNFT(null);
-      
     } catch (error: any) {
-  console.error('Error creating auction:', error);
-  if (error.message.includes('reverted')) {
-    toast.error('Auction creation failed. Please contact support or try again.');
-  } else {
-    toast.error('An unexpected error occurred.');
-  }
-}
+      console.error("Error creating auction:", error);
+      if (error.message.includes("reverted")) {
+        toast.error(
+          "Auction creation failed. Please contact support or try again."
+        );
+      } else {
+        toast.error("An unexpected error occurred.");
+      }
+    }
   };
 
   if (!isAuthenticated) {
@@ -134,7 +144,9 @@ function MyNFTsContent() {
       <div className="min-h-screen bg-[#212121]/80 backdrop-blur-md">
         <Header onMenuClick={() => {}} />
         <main className="container mx-auto px-4 py-8">
-          <p className="text-white text-center">Please connect your wallet to view your NFTs.</p>
+          <p className="text-white text-center">
+            Please connect your wallet to view your NFTs.
+          </p>
         </main>
       </div>
     );
@@ -155,7 +167,11 @@ function MyNFTsContent() {
             {nfts.map((nft) => (
               <div key={nft.id} className="bg-gray-800/30 rounded-xl p-4">
                 {nft.image && (
-                  <img src={nft.image} alt={nft.name} className="w-full h-48 object-cover rounded-lg mb-4" />
+                  <img
+                    src={nft.image}
+                    alt={nft.name}
+                    className="w-full h-48 object-cover rounded-lg mb-4"
+                  />
                 )}
                 <h3 className="text-white text-xl font-bold">{nft.name}</h3>
                 <p className="text-gray-400 mt-2">{nft.description}</p>
@@ -173,11 +189,16 @@ function MyNFTsContent() {
         {selectedNFT && (
           <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4">
             <div className="bg-gray-800 rounded-xl p-6 max-w-md w-full">
-              <h2 className="text-2xl font-bold text-white mb-4">Create Auction for {selectedNFT.name}</h2>
-              <form onSubmit={(e) => {
-                e.preventDefault();
-                createAuction(selectedNFT);
-              }} className="space-y-4">
+              <h2 className="text-2xl font-bold text-white mb-4">
+                Create Auction for {selectedNFT.name}
+              </h2>
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  createAuction(selectedNFT);
+                }}
+                className="space-y-4"
+              >
                 <div>
                   <label className="block text-sm font-medium text-gray-400 mb-1">
                     Starting Price (0.1 STT)
@@ -186,7 +207,12 @@ function MyNFTsContent() {
                     type="number"
                     step="0.1"
                     value={auctionForm.startingPrice}
-                    onChange={(e) => setAuctionForm({ ...auctionForm, startingPrice: e.target.value })}
+                    onChange={(e) =>
+                      setAuctionForm({
+                        ...auctionForm,
+                        startingPrice: e.target.value,
+                      })
+                    }
                     className="w-full px-4 py-2 rounded-lg bg-gray-700 text-white"
                     required
                   />
@@ -197,7 +223,12 @@ function MyNFTsContent() {
                   </label>
                   <select
                     value={auctionForm.duration}
-                    onChange={(e) => setAuctionForm({ ...auctionForm, duration: e.target.value })}
+                    onChange={(e) =>
+                      setAuctionForm({
+                        ...auctionForm,
+                        duration: e.target.value,
+                      })
+                    }
                     className="w-full px-4 py-2 rounded-lg bg-gray-700 text-white"
                   >
                     <option value="60">1 minute</option>

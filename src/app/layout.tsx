@@ -40,7 +40,7 @@ export const metadata: Metadata = {
     "mint NFT",
     "AuctSom",
     "digital collectibles",
-    "NFT auctions"
+    "NFT auctions",
   ],
   authors: [{ name: "AuctSom Team", url: "https://auctsom.vercel.app" }],
   creator: "AuctSom",
@@ -126,11 +126,9 @@ export default function RootLayout({
               },
             }}
           />
-
           {/* <Footer /> */}
         </div>
       </body>
     </html>
   );
 }
-

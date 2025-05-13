@@ -1,5 +1,5 @@
-import { ethers } from 'ethers';
-import NFTRegistryABI from '../../artifacts/contracts/NFTRegistry.sol/NFTRegistry.json';
+import { ethers } from "ethers";
+import NFTRegistryABI from "../../artifacts/contracts/NFTRegistry.sol/NFTRegistry.json";
 
 export interface NFTRegistryContract {
   registerNFT(
@@ -15,9 +15,7 @@ export interface NFTRegistryContract {
     tokenId: ethers.BigNumberish
   ): Promise<ethers.ContractTransactionResponse>;
 
-  getUserNFTs(
-    user: string
-  ): Promise<ethers.BigNumberish[]>;
+  getUserNFTs(user: string): Promise<ethers.BigNumberish[]>;
 
   getAllNFTs(): Promise<Array<ethers.BigNumberish>>;
 }
@@ -29,33 +27,37 @@ export function createNFTRegistryContract(
   const contract = new ethers.Contract(address, NFTRegistryABI.abi, provider);
 
   return {
-    registerNFT: async (collection: string, owner: string, tokenId: ethers.BigNumberish) => {
+    registerNFT: async (
+      collection: string,
+      owner: string,
+      tokenId: ethers.BigNumberish
+    ) => {
       try {
-        console.log('Registering NFT:', { collection, owner, tokenId });
+        console.log("Registering NFT:", { collection, owner, tokenId });
         const tx = await contract.registerNFT(collection, owner, tokenId);
         const receipt = await tx.wait();
-        console.log('NFT registration confirmed:', receipt);
+        console.log("NFT registration confirmed:", receipt);
         return tx;
       } catch (error: any) {
-        console.error('NFT registration error:', error);
+        console.error("NFT registration error:", error);
         throw error;
       }
     },
-    
-    transferNFT: (collection, from, to, tokenId) => 
+
+    transferNFT: (collection, from, to, tokenId) =>
       contract.transferNFT(collection, from, to, tokenId),
-    
+
     getUserNFTs: async (user) => {
       const result = await contract.getUserNFTs(user);
       return result;
     },
-    
+
     getAllNFTs: async () => {
       try {
         const result = await contract.getAllNFTs();
         return Array.isArray(result) ? result : [];
       } catch (error) {
-        console.warn('Error fetching NFTs, returning empty array:', error);
+        console.warn("Error fetching NFTs, returning empty array:", error);
         return [];
       }
     },
