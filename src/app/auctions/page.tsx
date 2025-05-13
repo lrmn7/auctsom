@@ -392,11 +392,11 @@ function AuctionsContent() {
               >
                 <div>
                   <label className="block text-sm font-medium text-gray-400 mb-1">
-                    Bid Amount (STT)
+                    Bid Amount (0.2 STT)
                   </label>
                   <input
                     type="number"
-                    step="0.1"
+                    step="0.2"
                     value={bidAmount}
                     onChange={(e) => setBidAmount(e.target.value)}
                     className="w-full px-4 py-2 rounded-lg bg-gray-700 text-white"
