@@ -98,11 +98,16 @@ const handleMintNFT = async (event: React.FormEvent) => {
     
   } catch (error: any) {
     console.error('Minting error:', error);
-    if (error?.code === 4001) {
-      toast.error('Transaction cancelled.');
-    }
+      if (
+        (error as any)?.code === 4001 ||
+        (error as any)?.reason === "rejected" ||
+        (error as any)?.message?.includes("user denied") ||
+        (error as any)?.message?.includes("User denied")
+      ) {
+        toast.error("Transaction cancelled by user");
+      }
     else {
-      toast.error('Transaction cancelled or failed. Please try again.');
+      toast.error('Transaction failed. Please try again.');
     }
   } finally {
     setIsMinting(false);
