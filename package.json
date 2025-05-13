@@ -12,7 +12,6 @@
     "compile": "hardhat compile",
     "deploy": "hardhat run scripts/deploy.ts --network localhost",
     "reset": "rimraf artifacts cache deployments cache_forge && npx hardhat compile"
-
   },
   "keywords": [],
   "author": "",
@@ -52,6 +51,7 @@
     "@emotion/styled": "^11.14.0",
     "@mui/material": "^5.16.14",
     "@thirdweb-dev/sdk": "^4.0.99",
+    "@thirdweb-dev/storage": "^2.0.15",
     "autoprefixer": "^10.4.20",
     "lucide-react": "^0.469.0",
     "next": "^15.1.6",
